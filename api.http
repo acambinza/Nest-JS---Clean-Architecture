@@ -1,11 +1,21 @@
 GET  http://localhost:3000/tasks
 
 ### 
-GET http://localhost:3000/tasks/c3a30ed4-c189-4ff6-b2f3-5fabf72e0665
+GET http://localhost:3000/tasks/0d378544-8971-4f18-8f5e-ca7c30b81965
 
 
 ### 
 POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "name": "Colab 01",
+  "description": "Spring 03",
+  "start_at": "2024-07-16"
+}
+
+###
+PATCH  http://localhost:3000/tasks
 Content-Type: application/json
 
 {

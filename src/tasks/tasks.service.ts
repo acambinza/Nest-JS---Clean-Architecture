@@ -32,8 +32,47 @@ export class TasksService {
     });
   }
 
-  update(id: string, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: string, updateTaskDto: UpdateTaskDto) {
+    const task = await this.taskRepo.findOneByOrFail({ id: id });
+
+    task.name && (task.name = updateTaskDto.name);
+    task.description && (task.description = updateTaskDto.description);
+
+    if (updateTaskDto.start_at) {
+      if (updateTaskDto.status === TaskStatus.Active) {
+        throw new Error('Cannot start activated task');
+      }
+
+      if (updateTaskDto.status === TaskStatus.Completed) {
+        throw new Error('Cannot start completed task');
+      }
+
+      if (updateTaskDto.status === TaskStatus.Cancelled) {
+        throw new Error('Cannot start cancelled task');
+      }
+
+      task.start_at = updateTaskDto.start_at;
+      task.status = TaskStatus.Active;
+    }
+
+    if (updateTaskDto.end_at) {
+      if (updateTaskDto.status === TaskStatus.Completed) {
+        throw new Error('Cannot start completed task');
+      }
+
+      if (updateTaskDto.status === TaskStatus.Cancelled) {
+        throw new Error('Cannot start cancelled task');
+      }
+
+      if (updateTaskDto.end_at < task.start_at) {
+        throw new Error('Data de fim deve ser maior que a data de inicio');
+      }
+
+      task.end_at = updateTaskDto.end_at;
+      task.status = TaskStatus.Completed;
+    }
+
+    return this.taskRepo.save(task);
   }
 
   remove(id: string) {
