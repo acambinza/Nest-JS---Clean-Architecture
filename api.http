@@ -10,9 +10,18 @@ Content-Type: application/json
 
 {
   "name": "Colab 01",
-  "description": "Spring 03",
-  "start_at": "2024-07-16"
+  "description": "Spring 03"
 }
+
+### 
+POST http://localhost:3000/tasks/ff3144e8-4f48-4c56-934a-66312853bc09/start
+Content-Type: application/json
+
+{
+  "start_at": "2024-07-18"
+}
+
+
 
 ###
 PATCH  http://localhost:3000/tasks/a16d913b-3e59-457b-889f-ce225546942c
