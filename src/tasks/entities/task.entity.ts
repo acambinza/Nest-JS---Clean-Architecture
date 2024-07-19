@@ -41,4 +41,23 @@ export class Task {
     Object.assign(this, props);
     this.id = id ?? crypto.randomUUID().toString();
   }
+
+  start(started_at: Date) {
+    if (started_at) {
+      if (this.status === TaskStatus.Active) {
+        throw new Error('Cannot start activated task');
+      }
+
+      if (this.status === TaskStatus.Completed) {
+        throw new Error('Cannot start completed task');
+      }
+
+      if (this.status === TaskStatus.Cancelled) {
+        throw new Error('Cannot start cancelled task');
+      }
+
+      this.start_at = started_at;
+      this.status = TaskStatus.Active;
+    }
+  }
 }

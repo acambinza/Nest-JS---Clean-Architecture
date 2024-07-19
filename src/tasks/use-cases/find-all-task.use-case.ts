@@ -1,16 +1,14 @@
-import { Repository } from 'typeorm/repository/Repository';
-import { Task } from '../entities/task.entity';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { ITaskRepository } from '../task.repository';
 
 @Injectable()
 export class FindAllTaskUseCase {
   constructor(
-    @InjectRepository(Task)
-    private readonly taskRepo: Repository<Task>,
+    @Inject('ITaskRepository')
+    private readonly taskRepo: ITaskRepository,
   ) {}
 
   execute() {
-    return this.taskRepo.find();
+    return this.taskRepo.findlAll();
   }
 }

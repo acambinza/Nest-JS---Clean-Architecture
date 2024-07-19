@@ -5,6 +5,7 @@ import {
   Body,
   // Patch,
   Param,
+  Inject,
   // Delete,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -15,11 +16,12 @@ import { StartTaskDto } from './dto/start-task.dto';
 
 @Controller('tasks')
 export class TasksWithUseCaseController {
-  constructor(
-    private readonly createTaskUseCase: CreateTaskUseCase,
-    private readonly findAllTaskUseCase: FindAllTaskUseCase,
-    private readonly startTaskUseCase: StartTaskUseCase,
-  ) {}
+  @Inject(CreateTaskUseCase)
+  private readonly createTaskUseCase: CreateTaskUseCase;
+  @Inject()
+  private readonly findAllTaskUseCase: FindAllTaskUseCase;
+  @Inject()
+  private readonly startTaskUseCase: StartTaskUseCase;
 
   @Post()
   create(@Body() createTaskDto: CreateTaskDto) {

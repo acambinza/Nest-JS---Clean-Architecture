@@ -1,19 +1,17 @@
-import { Repository } from 'typeorm/repository/Repository';
 import { Task, TaskStatus } from '../entities/task.entity';
 import { CreateTaskDto } from '../dto/create-task.dto';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { ITaskRepository } from '../task.repository';
 
 @Injectable()
 export class CreateTaskUseCase {
-  constructor(
-    @InjectRepository(Task)
-    private readonly taskRepo: Repository<Task>,
-  ) {}
+  @Inject('ITaskRepository')
+  private readonly taskRepo: ITaskRepository;
 
-  execute(input: CreateTaskDto) {
+  async execute(input: CreateTaskDto) {
     const task = new Task(input);
     input.start_at ? (task.status = TaskStatus.Active) : TaskStatus.Pending;
-    return this.taskRepo.save(task);
+    await this.taskRepo.create(task);
+    return task;
   }
 }
